@@ -1,19 +1,12 @@
 package com.redsponge.foodworld.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.redsponge.foodworld.game.stations.FinalizeScreen;
-import com.redsponge.foodworld.game.stations.GrowStation;
-import com.redsponge.foodworld.game.stations.OrderStation;
-import com.redsponge.foodworld.game.stations.PrepareStation;
-import com.redsponge.redengine.screen.components.Mappers;
+import com.redsponge.foodworld.game.stations.*;
 import com.redsponge.redengine.screen.components.RenderRunnableComponent;
 import com.redsponge.redengine.screen.entity.ScreenEntity;
 import com.redsponge.redengine.screen.systems.RenderSystem;
-import com.redsponge.redengine.utils.Logger;
 
 public class GameStations extends ScreenEntity {
 
@@ -45,6 +38,8 @@ public class GameStations extends ScreenEntity {
     }
 
     public void setSelectedIndex(int selectedIndex) {
+        stations[this.selectedIndex].hide();
         this.selectedIndex = selectedIndex;
+        stations[this.selectedIndex].show();
     }
 }

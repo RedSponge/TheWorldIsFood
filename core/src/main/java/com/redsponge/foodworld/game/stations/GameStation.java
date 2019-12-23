@@ -1,4 +1,4 @@
-package com.redsponge.foodworld.game;
+package com.redsponge.foodworld.game.stations;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,7 +16,15 @@ public abstract class GameStation {
         this.viewport = viewport;
     }
 
+    public void show() {
+
+    }
+
     public abstract void tick(float delta);
     public abstract void render();
+
+    public void hide() {
+
+    }
 
 }
