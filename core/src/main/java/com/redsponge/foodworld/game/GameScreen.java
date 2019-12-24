@@ -1,16 +1,18 @@
 package com.redsponge.foodworld.game;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.redsponge.foodworld.game.stations.GameStation;
 import com.redsponge.redengine.assets.AssetSpecifier;
 import com.redsponge.redengine.screen.AbstractScreen;
-import com.redsponge.redengine.screen.components.Mappers;
-import com.redsponge.redengine.screen.components.RenderRunnableComponent;
 import com.redsponge.redengine.screen.systems.RenderSystem;
 import com.redsponge.redengine.utils.GameAccessor;
+
+import java.lang.reflect.Field;
 
 public class GameScreen extends AbstractScreen {
 
@@ -25,6 +27,7 @@ public class GameScreen extends AbstractScreen {
     private GameStations stations;
 
     private InputMultiplexer inputMultiplexer;
+    public Engine _engine;
 
     public static final Vector2 mousePos = new Vector2();
     private Stage stage;
@@ -36,6 +39,14 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void show() {
         super.show();
+
+        try {
+            Field f = AbstractScreen.class.getDeclaredField("engine");
+            f.setAccessible(true);
+            _engine = (Engine) f.get(this);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -49,10 +60,10 @@ public class GameScreen extends AbstractScreen {
         gui = new GameGUI(batch, shapeRenderer);
         addEntity(gui);
 
-        stage = new Stage(renderSystem.getViewport(), batch);
-        inputMultiplexer.addProcessor(stage);
+//        stage = new Stage(renderSystem.getViewport(), batch);
+//        inputMultiplexer.addProcessor(stage);
 
-        addEntity(new Planet(batch, shapeRenderer));
+//        addEntity(new Planet(batch, shapeRenderer));
     }
 
 
@@ -73,8 +84,6 @@ public class GameScreen extends AbstractScreen {
 
         tickEntities(v);
         updateEngine(v);
-        stage.act(v);
-        stage.draw();
 
         MouseInput.getInstance().allOff();
     }
@@ -94,10 +103,17 @@ public class GameScreen extends AbstractScreen {
     }
 
     public void setStation(int index) {
+        GameStation old = stations.getSelectedStation();
+        inputMultiplexer.removeProcessor(old.getStage());
         stations.setSelectedIndex(index);
+        inputMultiplexer.addProcessor(stations.getSelectedStation().getStage());
     }
 
     public Stage getStage() {
         return stage;
+    }
+
+    public GameStations getStations() {
+        return stations;
     }
 }

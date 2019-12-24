@@ -10,6 +10,8 @@ public class PackTextures {
     public static void main(String[] args) {
         proc("planet");
         proc("ui");
+        proc("prepare");
+        proc("grow");
     }
 
     public static void proc(String name) {

@@ -22,10 +22,10 @@ public class GameStations extends ScreenEntity {
     public void added() {
         FitViewport viewport = screen.getEntitySystem(RenderSystem.class).getViewport();
         stations = new GameStation[] {
-                new OrderStation(shapeRenderer, batch, viewport),
-                new PrepareStation(shapeRenderer, batch, viewport),
-                new GrowStation(shapeRenderer, batch, viewport),
-                new FinalizeScreen(shapeRenderer, batch, viewport),
+                new OrderStation((GameScreen) screen, shapeRenderer, batch, viewport),
+                new PrepareStation((GameScreen) screen, shapeRenderer, batch, viewport),
+                new GrowStation((GameScreen) screen, shapeRenderer, batch, viewport),
+                new FinalizeScreen((GameScreen) screen, shapeRenderer, batch, viewport),
         };
         add(new RenderRunnableComponent(() -> {
             batch.end();
@@ -34,12 +34,30 @@ public class GameStations extends ScreenEntity {
         }));
         pos.set(0, 0, 5);
         size.set(320, 180);
+    }
 
+    @Override
+    public void loadAssets() {
+        for (int i = 0; i < stations.length; i++) {
+            stations[i].loadAssets(assets);
+        }
+    }
+
+    public void additionalTick(float delta) {
+        stations[selectedIndex].tick(delta);
     }
 
     public void setSelectedIndex(int selectedIndex) {
         stations[this.selectedIndex].hide();
         this.selectedIndex = selectedIndex;
         stations[this.selectedIndex].show();
+    }
+
+    public GameStation getSelectedStation() {
+        return stations[this.selectedIndex];
+    }
+
+    public GameStation[] getStations() {
+        return stations;
     }
 }

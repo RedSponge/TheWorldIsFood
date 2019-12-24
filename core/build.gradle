@@ -3,6 +3,6 @@ eclipse.project.name = appName + '-core'
 
 dependencies {
 	api "com.badlogicgames.gdx:gdx:$gdxVersion"
-	implementation 'com.github.RedSponge:RedEngine:a94b34d5ee'
+	implementation 'com.github.RedSponge:RedEngine:19a4fa7801'
 	api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
 }

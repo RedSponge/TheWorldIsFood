@@ -4,11 +4,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.redsponge.foodworld.game.GameScreen;
 
 public class FinalizeScreen extends GameStation {
 
-    public FinalizeScreen(ShapeRenderer shapeRenderer, SpriteBatch batch, FitViewport viewport) {
-        super(shapeRenderer, batch, viewport);
+    public FinalizeScreen(GameScreen screen, ShapeRenderer shapeRenderer, SpriteBatch batch, FitViewport viewport) {
+        super(screen, shapeRenderer, batch, viewport);
     }
 
     @Override

@@ -1,54 +1,68 @@
 
-ui.png
+prepare.png
 size: 512,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-button
+add_freeze
+  rotate: false
+  xy: 2, 56
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+add_humanity
+  rotate: false
+  xy: 324, 238
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+add_plants
+  rotate: false
+  xy: 2, 38
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+add_water
+  rotate: false
+  xy: 36, 56
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 2, 74
+  size: 320, 180
+  orig: 320, 180
+  offset: 0, 0
+  index: -1
+new_planet
+  rotate: false
+  xy: 324, 220
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+plants_seeds
+  rotate: false
+  xy: 358, 238
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
+plants_sparse
   rotate: false
   xy: 2, 20
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
-  index: 1
-button
-  rotate: false
-  xy: 324, 202
-  size: 32, 16
-  orig: 32, 16
-  offset: 0, 0
-  index: 2
-button
+  index: -1
+plants_tons
   rotate: false
   xy: 2, 2
-  size: 32, 16
-  orig: 32, 16
-  offset: 0, 0
-  index: 3
-button
-  rotate: false
-  xy: 36, 20
-  size: 32, 16
-  orig: 32, 16
-  offset: 0, 0
-  index: 4
-done
-  rotate: false
-  xy: 324, 184
-  size: 32, 16
-  orig: 32, 16
-  offset: 0, 0
-  index: -1
-foreground
-  rotate: false
-  xy: 2, 38
-  size: 320, 180
-  orig: 320, 180
-  offset: 0, 0
-  index: -1
-trash
-  rotate: false
-  xy: 358, 202
   size: 32, 16
   orig: 32, 16
   offset: 0, 0

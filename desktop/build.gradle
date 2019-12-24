@@ -7,9 +7,9 @@ sourceCompatibility = 1.8
 
 dependencies {
 	api project(':core')
+	api "com.github.RedSponge:RedEngine:19a4fa7801"
 	api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
 	api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-	api "com.github.RedSponge:RedEngine:a94b34d5ee"
 }
 
 jar {
