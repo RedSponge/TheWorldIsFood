@@ -33,7 +33,7 @@ public class GameAssets extends AssetSpecifier {
     @AtlasAnimation(animationName = "human", atlas = "planetAtlas", length = 5)
     private Animation<TextureRegion> planetHuman;
 
-    @AtlasAnimation(animationName = "seeds", atlas = "planetAtlas", length = 4)
+    @AtlasAnimation(animationName = "seeds", atlas = "planetAtlas", length = 5)
     private Animation<TextureRegion> planetSeeds;
 
 

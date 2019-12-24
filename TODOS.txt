@@ -1,0 +1,6 @@
+- Grow works when not chosen
+- When grow too much explode
+- Order and Finalize
+- Music
+- New Sprites
+- Sounds

@@ -16,6 +16,7 @@ public class PrepareStation extends GameStation {
 
     private Planet planet;
     private TextureRegion background;
+    private AssetSpecifier assets;
 
     private static final int BUTTON_NEW = 0;
     private static final int BUTTON_WATER = 1;
@@ -63,7 +64,6 @@ public class PrepareStation extends GameStation {
 
     private void trash() {
         planet.getActor().remove();
-        screen.removeEntity(planet);
         planet = null;
         updateButtons();
     }
@@ -94,7 +94,6 @@ public class PrepareStation extends GameStation {
             screen.addEntity(buttons[i]);
         }
         if(planet != null) {
-            screen.addEntity(planet);
             planet.setPosition((int) viewport.getWorldWidth() / 2 - 16, (int) viewport.getWorldHeight() / 2 - 16);
         }
         
@@ -138,15 +137,13 @@ public class PrepareStation extends GameStation {
     @Override
     public void loadAssets(AssetSpecifier as) {
         background = as.getTextureRegion("prepareBackground");
+        assets = as;
     }
 
     @Override
     public void hide() {
         for (int i = 0; i < buttons.length; i++) {
             screen.removeEntity(buttons[i]);
-        }
-        if(planet != null) {
-            screen.removeEntity(planet);
         }
     }
 
@@ -156,8 +153,8 @@ public class PrepareStation extends GameStation {
     }
 
     private void newPlanet() {
-        planet = new Planet(batch, shapeRenderer);
-        screen.addEntity(planet);
+        planet = new Planet();
+        planet.loadAssets(assets);
         planet.addToStage(stage);
 
         planet.setPosition((int) viewport.getWorldWidth() / 2 - 16, (int) viewport.getWorldHeight() / 2 - 16);
@@ -214,8 +211,9 @@ public class PrepareStation extends GameStation {
         batch.begin();
         batch.setColor(Color.WHITE);
         batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        if(planet != null) {
+            planet.render(batch);
+        }
         batch.end();
-
-        stage.draw();
     }
 }

@@ -81,9 +81,16 @@ seeds
   orig: 32, 32
   offset: 0, 0
   index: 4
-water
+seeds
   rotate: false
   xy: 376, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+water
+  rotate: false
+  xy: 410, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.foodworld.game.GameScreen;
+import com.redsponge.foodworld.game.Planet;
+import com.redsponge.redengine.utils.Logger;
 
 public class FinalizeScreen extends GameStation {
 
@@ -24,5 +26,9 @@ public class FinalizeScreen extends GameStation {
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.rect(0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         shapeRenderer.end();
+    }
+
+    public void addPlanet(Planet p) {
+        Logger.log(this, "GOT NEW PLANET", p);
     }
 }

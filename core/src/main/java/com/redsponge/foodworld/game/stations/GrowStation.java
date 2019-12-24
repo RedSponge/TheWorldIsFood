@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.foodworld.game.GameScreen;
@@ -17,6 +19,8 @@ public class GrowStation extends GameStation {
     private TextureRegion background;
     private ScreenButtonRunnable fetchButton;
     private Planet fetchedPlanet;
+    private Circle docker;
+    private Circle output;
 
     private static final int[] GROWER_POSITIONS = {
         63, 60,
@@ -35,6 +39,9 @@ public class GrowStation extends GameStation {
         basePlanets = new DelayedRemovalArray<>();
         fetchButton = new ScreenButtonRunnable(batch, shapeRenderer, (int) viewport.getWorldWidth(), (int) viewport.getWorldHeight(), "growFetchButton", 24, 180 - 133);
         fetchButton.setOnClick(this::fetchPlanet);
+
+        docker = new Circle(55, 180 - 100, 16);
+        output = new Circle(320 - 55, 180 - 100, 16);
         updateButton();
     }
 
@@ -46,10 +53,46 @@ public class GrowStation extends GameStation {
         fetchedPlanet = basePlanets.first();
         basePlanets.removeIndex(0);
 
-        screen.addEntity(fetchedPlanet);
-
         stage.addActor(fetchedPlanet.getActor());
-        fetchedPlanet.setPosition(66 - 16, 180-101 - 16);
+        fetchedPlanet.setPosition((int) docker.x - 16, (int) docker.y - 16);
+        fetchedPlanet.setDraggable(true);
+        fetchedPlanet.setOnDragRelease((p) -> {
+            boolean found = false;
+            Grower from = null;
+            for (int i = 0; i < growers.length; i++) {
+                if(growers[i].canContain(p)) {
+                    growers[i].setContent(p);
+                    found = true;
+                    if(fetchedPlanet == p) {
+//                        fetchedPlanet = null;
+                        fetchedPlanet = null;
+                    }
+                } else if(growers[i].getContents() == p){
+                    growers[i].setContent(null);
+                    from = growers[i];
+                }
+            }
+            if(!found) {
+                if(output.overlaps(p.asCircle())) {
+                    if(from != null) {
+                        from.setContent(null);
+                    } else if(fetchedPlanet == p) {
+                        fetchedPlanet = null;
+                    }
+                    p.getActor().remove();
+                    ((FinalizeScreen)(screen.getStations().getStations()[3])).addPlanet(p);
+                    return;
+                }
+
+                if(fetchedPlanet != p) {
+                    if(from == null) throw new RuntimeException("Couldn't find from but fetchedPlanet was taken! for " + p);
+                    from.setContent(p);
+                } else {
+                    p.setPosition((int) docker.x - 16, (int) docker.y - 16);
+                    fetchedPlanet = p;
+                }
+            }
+        });
 
         updateButton();
     }
@@ -60,6 +103,9 @@ public class GrowStation extends GameStation {
 
     @Override
     public void loadAssets(AssetSpecifier as) {
+        if(fetchedPlanet != null) {
+            fetchedPlanet.loadAssets(as);
+        }
         for (int i = 0; i < growers.length; i++) {
             growers[i].loadAssets(as);
         }
@@ -69,6 +115,11 @@ public class GrowStation extends GameStation {
     @Override
     public void show() {
         screen.addEntity(fetchButton);
+        for (int i = 0; i < growers.length; i++) {
+            if(growers[i].getContents() != null) {
+                growers[i].setContent(growers[i].getContents());
+            }
+        }
         updateButton();
     }
 
@@ -77,15 +128,16 @@ public class GrowStation extends GameStation {
         for (int i = 0; i < growers.length; i++) {
             growers[i].tick(delta);
         }
+        stage.act(delta);
     }
 
     @Override
     public void render() {
-//        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-//        shapeRenderer.setColor(0.8f, 0.5f, 0.0f, 1.0f);
-//        shapeRenderer.begin(ShapeType.Filled);
-//        shapeRenderer.rect(0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-//        shapeRenderer.end();
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.setColor(0.8f, 0.5f, 0.0f, 1.0f);
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.rect(0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        shapeRenderer.end();
 
         batch.begin();
         batch.setColor(Color.WHITE);
@@ -93,8 +145,23 @@ public class GrowStation extends GameStation {
         for (int i = 0; i < growers.length; i++) {
             growers[i].render(shapeRenderer, batch);
         }
+        if(fetchedPlanet != null) {
+            fetchedPlanet.render(batch);
+        }
         batch.setColor(Color.WHITE);
         batch.end();
+
+        shapeRenderer.begin(ShapeType.Filled);
+        for (int i = 0; i < growers.length; i++) {
+            growers[i].renderProgress(shapeRenderer);
+        }
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeType.Line);
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.circle(docker.x, docker.y, docker.radius);
+        shapeRenderer.circle(output.x, output.y, output.radius);
+        shapeRenderer.end();
     }
 
     @Override
