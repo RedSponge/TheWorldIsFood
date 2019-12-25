@@ -113,15 +113,14 @@ public class PrepareStation extends GameStation {
         }
 
         buttons[BUTTON_WATER].setActive(!planet.hasWater());
-        if(!planet.hasWater() || planet.getSeedsLevel() > 0) {
-            for(int i = BUTTON_PLANTS; i < BUTTON_TONS + 1; i++) {
-                buttons[i].setActive(false);
-            }
-        }
-
+        buttons[BUTTON_PLANTS].setActive(planet.hasWater() && !(planet.getSeedsLevel() > 0 || chooseSeeds));
         if(chooseSeeds) {
             for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setActive(i >= BUTTON_SEEDS && i <= BUTTON_TONS);
+            }
+        } else {
+            for (int i = BUTTON_SEEDS; i <= BUTTON_TONS; i++) {
+                buttons[i].setActive(false);
             }
         }
 
@@ -163,8 +162,7 @@ public class PrepareStation extends GameStation {
 
     private void addWater() {
         planet.setHasWater(true);
-        buttons[BUTTON_WATER].setActive(false);
-        buttons[BUTTON_PLANTS].setActive(true);
+        updateButtons();
     }
 
     private void addPlants() {
