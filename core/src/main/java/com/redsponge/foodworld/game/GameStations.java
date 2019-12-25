@@ -25,7 +25,7 @@ public class GameStations extends ScreenEntity {
                 new OrderStation((GameScreen) screen, shapeRenderer, batch, viewport),
                 new PrepareStation((GameScreen) screen, shapeRenderer, batch, viewport),
                 new GrowStation((GameScreen) screen, shapeRenderer, batch, viewport),
-                new FinalizeScreen((GameScreen) screen, shapeRenderer, batch, viewport),
+                new FinalizeStation((GameScreen) screen, shapeRenderer, batch, viewport),
         };
         add(new RenderRunnableComponent(() -> {
             batch.end();

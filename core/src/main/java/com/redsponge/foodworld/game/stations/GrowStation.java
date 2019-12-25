@@ -1,6 +1,7 @@
 package com.redsponge.foodworld.game.stations;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,6 +13,8 @@ import com.redsponge.foodworld.game.GameScreen;
 import com.redsponge.foodworld.game.Planet;
 import com.redsponge.foodworld.game.ScreenButtonRunnable;
 import com.redsponge.redengine.assets.AssetSpecifier;
+import com.redsponge.redengine.assets.Font;
+import com.redsponge.redengine.assets.Fonts;
 
 public class GrowStation extends GameStation {
 
@@ -21,6 +24,8 @@ public class GrowStation extends GameStation {
     private Planet fetchedPlanet;
     private Circle docker;
     private Circle output;
+
+    private BitmapFont font;
 
     private static final int[] GROWER_POSITIONS = {
         63, 60,
@@ -42,6 +47,8 @@ public class GrowStation extends GameStation {
 
         docker = new Circle(55, 180 - 100, 16);
         output = new Circle(320 - 55, 180 - 100, 16);
+
+        font = Fonts.getFont("pixelmix", 8);
         updateButton();
     }
 
@@ -80,7 +87,7 @@ public class GrowStation extends GameStation {
                         fetchedPlanet = null;
                     }
                     p.getActor().remove();
-                    ((FinalizeScreen)(screen.getStations().getStations()[3])).addPlanet(p);
+                    ((FinalizeStation)(screen.getStations().getStations()[3])).addPlanet(p);
                     return;
                 }
 
@@ -153,6 +160,7 @@ public class GrowStation extends GameStation {
             fetchedPlanet.render(batch);
         }
         batch.setColor(Color.WHITE);
+        font.draw(batch, "Pending: " + basePlanets.size, 46, 180 - 130);
         batch.end();
 
         shapeRenderer.begin(ShapeType.Filled);

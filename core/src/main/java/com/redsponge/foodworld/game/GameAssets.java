@@ -8,7 +8,6 @@ import com.redsponge.redengine.assets.Asset;
 import com.redsponge.redengine.assets.AssetSpecifier;
 import com.redsponge.redengine.assets.atlas.AtlasAnimation;
 import com.redsponge.redengine.assets.atlas.AtlasFrame;
-import com.sun.org.apache.xerces.internal.dom.RangeImpl;
 
 public class GameAssets extends AssetSpecifier {
 
@@ -115,5 +114,8 @@ public class GameAssets extends AssetSpecifier {
     private TextureAtlas finalizeAtlas;
 
     @AtlasFrame(frameName = "add_volcano", atlas = "finalizeAtlas")
-    private TextureRegion finalizeAddVolcanoButton;
+    private TextureRegion finalizeAddVolcanic;
+
+    @AtlasFrame(frameName = "background", atlas = "finalizeAtlas")
+    private TextureRegion finalizeBackground;
 }

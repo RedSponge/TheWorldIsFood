@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,8 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.redsponge.foodworld.Utils;
 import com.redsponge.redengine.assets.AssetSpecifier;
-import com.redsponge.redengine.screen.components.RenderRunnableComponent;
-import com.redsponge.redengine.screen.components.TextureComponent;
+import com.redsponge.redengine.utils.Logger;
 
 import java.util.function.Consumer;
 
@@ -27,12 +25,14 @@ public class Planet {
     private int seedsLevel;
     private int humanLevel;
     private boolean hasWater;
+    private boolean volcanic;
 
     private TextureRegion baseTex;
     private TextureRegion waterTex;
     private Animation<TextureRegion> seedsTex;
     private Animation<TextureRegion> humanTex;
     private TextureRegion iceTex;
+    private TextureRegion volcanicTex;
 
     private Consumer<Planet> onDragRelease;
 
@@ -41,8 +41,11 @@ public class Planet {
     private int timeSpent;
     private boolean dragged;
 
+    private int scale;
+
     public Planet() {
         c = new Circle();
+        scale = 1;
     }
 
 
@@ -71,6 +74,16 @@ public class Planet {
         iceTex = assets.getTextureRegion("planetIce");
         seedsTex = assets.getAnimation("planetSeeds");
         humanTex = assets.getAnimation("planetHuman");
+        volcanicTex = assets.getTextureRegion("planetVolcano");
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public Planet setScale(int scale) {
+        this.scale = scale;
+        return this;
     }
 
     public void addToStage(Stage stage) {
@@ -80,19 +93,29 @@ public class Planet {
     public void render(SpriteBatch batch) {
 
         batch.setColor(Color.WHITE);
-        batch.draw(baseTex, actor.getX(), actor.getY());
+        Logger.log(this, actor.getX() - actor.getWidth() * (scale - 1));
+
+        float x = actor.getX() - (actor.getWidth() * (scale - 1)) / 2f;
+        float y = actor.getY() - (actor.getHeight() * (scale - 1)) / 2f;
+        float w = actor.getWidth() * scale;
+        float h = actor.getHeight() * scale;
+
+        batch.draw(baseTex, x, y, w, h);
 
         if(frozen) {
-            batch.draw(iceTex, actor.getX(), actor.getY());
+            batch.draw(iceTex, x, y, w, h);
         }
         if(hasWater) {
-            batch.draw(waterTex, actor.getX(), actor.getY());
+            batch.draw(waterTex, x, y, w, h);
         }
         if(seedsLevel > 0) {
-            batch.draw(Utils.getFrame(seedsTex, seedsLevel - 1), actor.getX(), actor.getY());
+            batch.draw(Utils.getFrame(seedsTex, seedsLevel - 1), x, y, w, h);
         }
         if(humanLevel > 0) {
-            batch.draw(Utils.getFrame(humanTex, humanLevel - 1), actor.getX(), actor.getY());
+            batch.draw(Utils.getFrame(humanTex, humanLevel - 1), x, y, w, h);
+        }
+        if(volcanic) {
+            batch.draw(volcanicTex, x, y, w, h);
         }
 
 
@@ -199,5 +222,14 @@ public class Planet {
 
     public int getTimeSpent() {
         return timeSpent;
+    }
+
+    public boolean isVolcanic() {
+        return volcanic;
+    }
+
+    public Planet setVolcanic(boolean volcanic) {
+        this.volcanic = volcanic;
+        return this;
     }
 }
