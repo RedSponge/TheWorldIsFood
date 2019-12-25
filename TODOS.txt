@@ -1,5 +1,5 @@
-- Grow works when not chosen
 - When grow too much explode
+- Trash in grow
 - Order and Finalize
 - Music
 - New Sprites

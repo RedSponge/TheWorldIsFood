@@ -36,6 +36,9 @@ public class GameAssets extends AssetSpecifier {
     @AtlasAnimation(animationName = "seeds", atlas = "planetAtlas", length = 5)
     private Animation<TextureRegion> planetSeeds;
 
+    @AtlasFrame(frameName = "volcano", atlas = "planetAtlas")
+    private TextureRegion planetVolcano;
+
 
     // BUTTONS
 
@@ -105,4 +108,12 @@ public class GameAssets extends AssetSpecifier {
 
     @AtlasFrame(frameName = "fetch", atlas = "growAtlas")
     private TextureRegion growFetchButton;
+
+    // FINALIZE
+
+    @Asset("textures/finalize.atlas")
+    private TextureAtlas finalizeAtlas;
+
+    @AtlasFrame(frameName = "add_volcano", atlas = "finalizeAtlas")
+    private TextureRegion finalizeAddVolcanoButton;
 }

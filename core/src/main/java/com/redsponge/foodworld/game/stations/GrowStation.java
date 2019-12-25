@@ -46,7 +46,7 @@ public class GrowStation extends GameStation {
     }
 
     private void updateButton() {
-        fetchButton.setActive(!basePlanets.isEmpty());
+        fetchButton.setActive(!basePlanets.isEmpty() && fetchedPlanet == null);
     }
 
     private void fetchPlanet() {
@@ -123,12 +123,16 @@ public class GrowStation extends GameStation {
         updateButton();
     }
 
-    @Override
-    public void tick(float delta) {
+    public void updateGrowers(float delta) {
         for (int i = 0; i < growers.length; i++) {
             growers[i].tick(delta);
         }
+    }
+
+    @Override
+    public void tick(float delta) {
         stage.act(delta);
+        updateButton();
     }
 
     @Override

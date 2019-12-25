@@ -12,6 +12,7 @@ public class PackTextures {
         proc("ui");
         proc("prepare");
         proc("grow");
+        proc("finalize");
     }
 
     public static void proc(String name) {

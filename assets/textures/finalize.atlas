@@ -1,0 +1,13 @@
+
+finalize.png
+size: 64,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+add_volcano
+  rotate: false
+  xy: 2, 2
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1

@@ -44,6 +44,7 @@ public class GameStations extends ScreenEntity {
     }
 
     public void additionalTick(float delta) {
+        ((GrowStation)stations[2]).updateGrowers(delta);
         stations[selectedIndex].tick(delta);
     }
 
