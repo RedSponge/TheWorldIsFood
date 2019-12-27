@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.foodworld.game.GameScreen;
-import com.redsponge.foodworld.game.ScreenButtonRunnable;
 
 public class OrderStation extends GameStation {
 

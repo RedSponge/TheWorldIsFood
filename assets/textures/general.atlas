@@ -1,0 +1,27 @@
+
+general.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+order_clip
+  rotate: false
+  xy: 2, 2
+  size: 30, 48
+  orig: 30, 48
+  offset: 0, 0
+  index: -1
+order_line
+  rotate: false
+  xy: 2, 52
+  size: 320, 180
+  orig: 320, 180
+  offset: 0, 0
+  index: -1
+order_paper
+  rotate: false
+  xy: 324, 184
+  size: 30, 48
+  orig: 30, 48
+  offset: 0, 0
+  index: -1

@@ -3,8 +3,11 @@ package com.redsponge.foodworld.game;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.foodworld.game.stations.GameStation;
 import com.redsponge.redengine.assets.AssetSpecifier;
@@ -32,6 +35,9 @@ public class GameScreen extends AbstractScreen {
     public static final Vector2 mousePos = new Vector2();
     private Stage stage;
 
+    private DelayedRemovalArray<Order> orders;
+    private TextureRegion orderLine;
+
     public GameScreen(GameAccessor ga) {
         super(ga);
     }
@@ -53,6 +59,8 @@ public class GameScreen extends AbstractScreen {
         inputMultiplexer.addProcessor(MouseInput.getInstance());
 
         renderSystem = getEntitySystem(RenderSystem.class);
+        stage = new Stage(renderSystem.getViewport(), batch);
+        inputMultiplexer.addProcessor(stage);
 
         stations = new GameStations(batch, shapeRenderer);
         addEntity(stations);
@@ -60,10 +68,19 @@ public class GameScreen extends AbstractScreen {
         gui = new GameGUI(batch, shapeRenderer);
         addEntity(gui);
 
+        addEntity(new OrderLine(batch, shapeRenderer));
+        for (int i = 0; i < 6; i++) {
+            addEntity(new Order(batch, shapeRenderer, MathUtils.random(6), MathUtils.random(5), MathUtils.randomBoolean(), MathUtils.randomBoolean(), MathUtils.randomBoolean(), i));
+        }
+//        addEntity(new Order(batch, shapeRenderer, 2, 3, true, false, true, 0));
+//        addEntity(new Order(batch, shapeRenderer, 4, 1, false, true, false, 1));
+
 //        stage = new Stage(renderSystem.getViewport(), batch);
 //        inputMultiplexer.addProcessor(stage);
 
 //        addEntity(new Planet(batch, shapeRenderer));
+
+        orderLine = assets.getTextureRegion("orderLine");
     }
 
 
@@ -84,6 +101,10 @@ public class GameScreen extends AbstractScreen {
 
         tickEntities(v);
         updateEngine(v);
+
+        stage.act(v);
+        stage.setDebugAll(true);
+        stage.draw();
 
         MouseInput.getInstance().allOff();
     }

@@ -118,4 +118,18 @@ public class GameAssets extends AssetSpecifier {
 
     @AtlasFrame(frameName = "background", atlas = "finalizeAtlas")
     private TextureRegion finalizeBackground;
+
+    // GENERAL
+
+    @Asset("textures/general.atlas")
+    private TextureAtlas generalAtlas;
+
+    @AtlasFrame(frameName = "order_paper", atlas = "generalAtlas")
+    private TextureRegion orderPaper;
+
+    @AtlasFrame(frameName = "order_clip", atlas = "generalAtlas")
+    private TextureRegion orderClip;
+
+    @AtlasFrame(frameName = "order_line", atlas = "generalAtlas")
+    private TextureRegion orderLine;
 }

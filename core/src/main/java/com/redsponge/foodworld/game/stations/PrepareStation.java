@@ -30,14 +30,14 @@ public class PrepareStation extends GameStation {
     private static final int BUTTON_ACCEPT = 9;
 
     private final Object[] buttonConfig = {
-            160, 19, "prepareNew",
-            42, 21, "prepareAddWater",
-            79, 21, "prepareAddPlants",
-            23, 42, "preparePlantsSeeds",
-            60, 42, "preparePlantsSparse",
-            97, 42, "preparePlantsTons",
-            220, 30, "prepareAddIce",
-            283, 30, "prepareAddHumanity",
+            160, 132, "prepareNew",
+            41, 70, "prepareAddWater",
+            77, 70, "prepareAddPlants",
+            21, 94, "preparePlantsSeeds",
+            59, 94, "preparePlantsSparse",
+            97, 94, "preparePlantsTons",
+            279, 70, "prepareAddIce",
+            279, 94, "prepareAddHumanity",
             25, 132, "buttonTrash",
             295, 132, "buttonOk"
     };

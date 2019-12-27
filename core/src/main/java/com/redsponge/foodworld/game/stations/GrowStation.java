@@ -13,7 +13,6 @@ import com.redsponge.foodworld.game.GameScreen;
 import com.redsponge.foodworld.game.Planet;
 import com.redsponge.foodworld.game.ScreenButtonRunnable;
 import com.redsponge.redengine.assets.AssetSpecifier;
-import com.redsponge.redengine.assets.Font;
 import com.redsponge.redengine.assets.Fonts;
 
 public class GrowStation extends GameStation {
@@ -28,8 +27,8 @@ public class GrowStation extends GameStation {
     private BitmapFont font;
 
     private static final int[] GROWER_POSITIONS = {
-        63, 60,
-        191, 60
+        83, 90,
+        171, 90
     };
 
     private DelayedRemovalArray<Planet> basePlanets;

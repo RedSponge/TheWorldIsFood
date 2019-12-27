@@ -41,7 +41,7 @@ public class Planet {
     private int timeSpent;
     private boolean dragged;
 
-    private int scale;
+    private float scale;
 
     public Planet() {
         c = new Circle();
@@ -77,11 +77,11 @@ public class Planet {
         volcanicTex = assets.getTextureRegion("planetVolcano");
     }
 
-    public int getScale() {
+    public float getScale() {
         return scale;
     }
 
-    public Planet setScale(int scale) {
+    public Planet setScale(float scale) {
         this.scale = scale;
         return this;
     }
@@ -93,7 +93,7 @@ public class Planet {
     public void render(SpriteBatch batch) {
 
         batch.setColor(Color.WHITE);
-        Logger.log(this, actor.getX() - actor.getWidth() * (scale - 1));
+//        Logger.log(this, actor.getX() - actor.getWidth() * (scale - 1));
 
         float x = actor.getX() - (actor.getWidth() * (scale - 1)) / 2f;
         float y = actor.getY() - (actor.getHeight() * (scale - 1)) / 2f;
@@ -125,7 +125,7 @@ public class Planet {
 //        shapeRenderer.end();
     }
 
-    public void setPosition(int x, int y) {
+    public void setPosition(float x, float y) {
         actor.setPosition(x, y);
     }
 
