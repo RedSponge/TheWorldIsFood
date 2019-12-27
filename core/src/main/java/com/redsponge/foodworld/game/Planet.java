@@ -108,11 +108,11 @@ public class Planet {
         if(seedsLevel > 0) {
             batch.draw(Utils.getFrame(seedsTex, seedsLevel - 1), x, y, w, h);
         }
-        if(humanLevel > 0) {
-            batch.draw(Utils.getFrame(humanTex, humanLevel - 1), x, y, w, h);
-        }
         if(volcanic) {
             batch.draw(volcanicTex, x, y, w, h);
+        }
+        if(humanLevel > 0) {
+            batch.draw(Utils.getFrame(humanTex, humanLevel - 1), x, y, w, h);
         }
         if(frozen) {
             batch.draw(iceTex, x, y, w, h);

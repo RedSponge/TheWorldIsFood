@@ -27,16 +27,14 @@ public class FinalizeStation extends GameStation {
     private BitmapFont font;
 
     private static final Object[] BUTTON_CONFIG = {
-        "growFetchButton", 24, 56,
-        "buttonOk", 295, 90,
-        "prepareAddIce", 94, 13,
-        "finalizeAddVolcanic", 226, 13,
-        "buttonTrash", 24, 124
+        "growFetchButton", 24, 111,
+        "prepareAddIce", 94, 34,
+        "finalizeAddVolcanic", 226, 34,
+        "buttonTrash", 24, 133
     };
 
     private final Runnable[] BUTTON_ACTIONS = {
         this::fetchPlanet,
-        this::finishPlanet,
         this::addIce,
         this::addVolcanic,
         this::trash
@@ -45,10 +43,9 @@ public class FinalizeStation extends GameStation {
 
 
     private static final int BUTTON_FETCH = 0;
-    private static final int BUTTON_FINISH = 1;
-    private static final int BUTTON_ICE = 2;
-    private static final int BUTTON_VOLCANIC = 3;
-    private static final int BUTTON_TRASH = 4;
+    private static final int BUTTON_ICE = 1;
+    private static final int BUTTON_VOLCANIC = 2;
+    private static final int BUTTON_TRASH = 3;
 
     private ScreenButtonRunnable[] buttons;
 
@@ -67,7 +64,6 @@ public class FinalizeStation extends GameStation {
 
     public void updateButtons() {
         buttons[BUTTON_FETCH].setActive(planets.size > 0 && modifiedPlanet == null);
-        buttons[BUTTON_FINISH].setActive(modifiedPlanet != null);
         buttons[BUTTON_ICE].setActive(modifiedPlanet != null && !modifiedPlanet.isFrozen());
         buttons[BUTTON_VOLCANIC].setActive(modifiedPlanet != null && !modifiedPlanet.isVolcanic());
         buttons[BUTTON_TRASH].setActive(modifiedPlanet != null);
@@ -105,7 +101,7 @@ public class FinalizeStation extends GameStation {
         if(modifiedPlanet != null) {
             modifiedPlanet.render(batch);
         }
-        font.draw(batch, "Pending\n" + planets.size, 20, 180 - 68, 9, Align.center, false);
+        font.draw(batch, "Pending\n" + planets.size, 20, 180 - 80, 9, Align.center, false);
         batch.end();
     }
 

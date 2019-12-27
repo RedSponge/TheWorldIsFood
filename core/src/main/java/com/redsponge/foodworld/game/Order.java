@@ -61,7 +61,7 @@ public class Order extends ScreenEntity {
 
     @Override
     public void added() {
-        pos.set((index) * 38 + 44, 180 - 28, 20 + index);
+        pos.set((index) * 28 + 44, 180 - 28, 20 + index);
         size.set(16, 23);
         render.setScaleX(0.75f).setScaleY(0.75f);
         actor = new Actor();

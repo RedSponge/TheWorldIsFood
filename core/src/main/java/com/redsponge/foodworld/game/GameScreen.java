@@ -69,7 +69,7 @@ public class GameScreen extends AbstractScreen {
         addEntity(gui);
 
         addEntity(new OrderLine(batch, shapeRenderer));
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 8; i++) {
             addEntity(new Order(batch, shapeRenderer, MathUtils.random(6), MathUtils.random(5), MathUtils.randomBoolean(), MathUtils.randomBoolean(), MathUtils.randomBoolean(), i));
         }
 //        addEntity(new Order(batch, shapeRenderer, 2, 3, true, false, true, 0));
