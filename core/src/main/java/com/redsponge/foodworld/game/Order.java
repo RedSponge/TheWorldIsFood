@@ -8,14 +8,13 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
-import com.redsponge.foodworld.ReverseInterpolation;
 import com.redsponge.redengine.screen.components.RenderRunnableComponent;
 import com.redsponge.redengine.screen.components.TextureComponent;
 import com.redsponge.redengine.screen.entity.ScreenEntity;
 import com.redsponge.redengine.utils.GeneralUtils;
+import com.redsponge.redengine.utils.Logger;
 
 public class Order extends ScreenEntity {
 
@@ -62,8 +61,8 @@ public class Order extends ScreenEntity {
 
     @Override
     public void added() {
-        pos.set((index) * 38 + 44, 180 - 50, 20 + index);
-        size.set(32, 48);
+        pos.set((index) * 38 + 44, 180 - 28, 20 + index);
+        size.set(16, 23);
         render.setScaleX(0.75f).setScaleY(0.75f);
         actor = new Actor();
         actor.setPosition(pos.getX(), pos.getY(), Align.center);
@@ -76,7 +75,11 @@ public class Order extends ScreenEntity {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 actor.moveBy(x - actor.getWidth() / 2, y - actor.getHeight() / 2);
+                if(!dragged) {
+                    actor.addAction(Actions.scaleTo(2f, 2f, 0.1f, Interpolation.exp5));
+                }
                 dragged = true;
+
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -89,9 +92,9 @@ public class Order extends ScreenEntity {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                actor.addAction(Actions.sequence(Actions.moveTo(actor.getX() < 35 ? 35 : actor.getX() > 280 ? 280 : actor.getX(), 180 - 50, 0.2f, Interpolation.circleOut), Actions.run(() -> {
+                actor.addAction(Actions.parallel(Actions.scaleTo(1, 1, 0.1f, Interpolation.exp5), Actions.sequence(Actions.moveTo(actor.getX() < 35 ? 35 : actor.getX() > 280 ? 280 : actor.getX(), 180 - 28, 0.2f, Interpolation.circleOut), Actions.run(() -> {
                     dragged = false;
-                })));
+                }))));
             }
 
             //            @Override
@@ -119,8 +122,8 @@ public class Order extends ScreenEntity {
     @Override
     public void loadAssets() {
         p.loadAssets(assets);
-        p.setScale(0.5f);
-//        p.setPosition((int) (pos.getX() - 4), (int) (pos.getY()));
+        p.setScale(0.4f);
+        p.setPosition((int) (pos.getX() - 4), (int) (pos.getY()));
 
         paper = assets.getTextureRegion("orderPaper");
         clipper = assets.getTextureRegion("orderClip");
@@ -128,17 +131,19 @@ public class Order extends ScreenEntity {
         add(new RenderRunnableComponent(() -> {
             float w = actor.getWidth() * actor.getScaleX();
             float h = actor.getHeight() * actor.getScaleY();
-            float x = actor.getX();
-            float y = actor.getY();
+            float x = actor.getX() - ((actor.getScaleX() - 1) * (w / 4));
+            float y = actor.getY() - ((actor.getScaleY() - 1) * (h / 4));
 
+            Logger.log(this, x, y, w, h);
             batch.setColor(Color.WHITE);
             batch.draw(paper, x, y, w, h);
-//            if(!dragged) {
-//                batch.setColor(clipperColour);
-//                batch.draw(clipper, actor.getX(), actor.getY(), size.getX() / 4f * 3, size.getY() / 4f * 3);
-//            }
+            if(!dragged) {
+                batch.setColor(clipperColour);
+                batch.draw(clipper, x, y, w, h);
+            }
             batch.setColor(Color.WHITE);
-            p.setPosition(actor.getX(), actor.getY());
+            p.setPosition(x - (w / 2) * (2 - actor.getScaleX()), y - (h / 2) * (2 - actor.getScaleY()) + 2);
+            p.setScale((actor.getScaleX() - 1.0f) / 2f + 0.4f);
             p.render(batch);
         }));
     }

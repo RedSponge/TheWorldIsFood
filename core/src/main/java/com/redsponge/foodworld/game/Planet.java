@@ -102,9 +102,6 @@ public class Planet {
 
         batch.draw(baseTex, x, y, w, h);
 
-        if(frozen) {
-            batch.draw(iceTex, x, y, w, h);
-        }
         if(hasWater) {
             batch.draw(waterTex, x, y, w, h);
         }
@@ -116,6 +113,9 @@ public class Planet {
         }
         if(volcanic) {
             batch.draw(volcanicTex, x, y, w, h);
+        }
+        if(frozen) {
+            batch.draw(iceTex, x, y, w, h);
         }
 
 
