@@ -58,13 +58,13 @@ public class Grower  {
         batch.setColor(1, 1, 1, opa);
         batch.draw(light, detectorCircle.x - light.getRegionWidth() / 2f, detectorCircle.y - light.getRegionHeight() / 2f + 20);
 
-        // DEBUG:
-        batch.end();
-        shapeRenderer.begin(ShapeType.Line);
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.circle(detectorCircle.x, detectorCircle.y, detectorCircle.radius);
-        shapeRenderer.end();
-        batch.begin();
+//        // DEBUG:
+//        batch.end();
+//        shapeRenderer.begin(ShapeType.Line);
+//        shapeRenderer.setColor(Color.YELLOW);
+//        shapeRenderer.circle(detectorCircle.x, detectorCircle.y, detectorCircle.radius);
+//        shapeRenderer.end();
+//        batch.begin();
     }
 
     public void renderProgress(ShapeRenderer sr) {

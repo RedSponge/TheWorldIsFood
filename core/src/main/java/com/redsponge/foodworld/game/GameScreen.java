@@ -4,7 +4,9 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -64,6 +66,13 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void show() {
         super.show();
+        try {
+            Field am = AssetSpecifier.class.getDeclaredField("am");
+            am.setAccessible(true);
+            ((AssetManager) am.get(assets)).finishLoading();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             Field f = AbstractScreen.class.getDeclaredField("engine");
@@ -144,7 +153,7 @@ public class GameScreen extends AbstractScreen {
         if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             paused = !paused;
         }
-        if(!paused) {
+        if(!paused && timeLeft >= 0) {
             mousePos.set(Gdx.input.getX(), Gdx.input.getY());
             renderSystem.getViewport().unproject(mousePos);
 
@@ -156,13 +165,42 @@ public class GameScreen extends AbstractScreen {
             stage.draw();
             timeLeft -= v;
 
+        } else if(timeLeft < 0) {
+            if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+                timeLeft = 3 * 60;
+                score = 0;
+            }
         }
         MouseInput.getInstance().allOff();
     }
 
     @Override
     public void render() {
-        if(!paused) {
+        if(timeLeft < 0) {
+            pauseViewport.apply();
+            batch.setProjectionMatrix(pauseViewport.getCamera().combined);
+            batch.begin();
+
+
+            int w = 320 * 2;
+            int h = 180 * 2;
+
+            Gdx.gl.glClearColor(0, 0, 0, 1.0f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.setColor(Color.WHITE);
+            batch.draw(pauseBG, 0, 0, w, h);
+
+            pixelMix.getData().setScale(2f);
+            drawCentered(w, h - 20, "PLANET BAKER", batch, pixelMix);
+
+            drawCentered(w, h - 40, "It's a Wrap!", batch, pixelMix);
+
+            drawCentered(w, h - 80, "TOTAL SCORE: " + score, batch, pixelMix);
+
+            pixelMix.getData().setScale(1.2f);
+            drawCentered(w, h - 320, "Press Space to Replay!", batch, pixelMix);
+        }
+        else if(!paused) {
             renderSystem.getViewport().apply();
             batch.setProjectionMatrix(renderSystem.getCamera().combined);
             batch.begin();

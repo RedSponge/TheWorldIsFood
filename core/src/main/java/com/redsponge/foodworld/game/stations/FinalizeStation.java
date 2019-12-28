@@ -105,11 +105,6 @@ public class FinalizeStation extends GameStation {
         }
         font.draw(batch, "Pending\n" + planets.size, 20, 180 - 80, 9, Align.center, false);
         batch.end();
-
-        shapeRenderer.begin(ShapeType.Line);
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.rect(doneRectangle.x, doneRectangle.y, doneRectangle.width, doneRectangle.height);
-        shapeRenderer.end();
     }
 
     @Override

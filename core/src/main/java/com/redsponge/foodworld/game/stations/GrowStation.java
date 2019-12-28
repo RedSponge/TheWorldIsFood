@@ -168,11 +168,11 @@ public class GrowStation extends GameStation {
         }
         shapeRenderer.end();
 
-        shapeRenderer.begin(ShapeType.Line);
-        shapeRenderer.setColor(Color.YELLOW);
-        shapeRenderer.circle(docker.x, docker.y, docker.radius);
-        shapeRenderer.circle(output.x, output.y, output.radius);
-        shapeRenderer.end();
+//        shapeRenderer.begin(ShapeType.Line);
+//        shapeRenderer.setColor(Color.YELLOW);
+//        shapeRenderer.circle(docker.x, docker.y, docker.radius);
+//        shapeRenderer.circle(output.x, output.y, output.radius);
+//        shapeRenderer.end();
     }
 
     @Override
