@@ -18,6 +18,9 @@ public class GameAssets extends AssetSpecifier {
         super(am);
     }
 
+    @Asset("menu.png")
+    private Texture menuBackground;
+
     // PLANETS
 
     @Asset(value = "textures/planet.atlas")
@@ -58,6 +61,9 @@ public class GameAssets extends AssetSpecifier {
 
     @AtlasFrame(frameName = "done", atlas = "uiAtlas")
     private TextureRegion buttonOk;
+
+    @AtlasFrame(frameName = "order", atlas = "uiAtlas")
+    private TextureRegion buttonNewOrder;
 
     // PREPARE
     @Asset("textures/prepare.atlas")

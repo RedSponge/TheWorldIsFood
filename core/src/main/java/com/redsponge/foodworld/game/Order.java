@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
 import com.redsponge.foodworld.game.stations.FinalizeStation;
+import com.redsponge.foodworld.game.stations.OrderStation;
 import com.redsponge.redengine.screen.components.RenderRunnableComponent;
 import com.redsponge.redengine.screen.components.TextureComponent;
 import com.redsponge.redengine.screen.entity.ScreenEntity;
@@ -69,6 +70,7 @@ public class Order extends ScreenEntity {
 
     @Override
     public void added() {
+        OrderStation.orderCount++;
         pos.set((index) * 28 + 44, 180 - 28, 20 + index);
         size.set(16, 23);
         render.setScaleX(0.75f).setScaleY(0.75f);
@@ -199,5 +201,7 @@ public class Order extends ScreenEntity {
     @Override
     public void removed() {
         actor.remove();
+        OrderStation.orderCount--;
+        ((OrderStation)((GameScreen)screen).getStations().getStations()[0]).updateButtons();
     }
 }

@@ -6,49 +6,56 @@ filter: Nearest,Nearest
 repeat: none
 button
   rotate: false
-  xy: 2, 20
+  xy: 324, 236
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: 1
 button
   rotate: false
-  xy: 324, 202
+  xy: 2, 20
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: 2
 button
   rotate: false
-  xy: 2, 2
+  xy: 68, 54
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: 3
 button
   rotate: false
-  xy: 36, 20
+  xy: 324, 218
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: 4
 done
   rotate: false
-  xy: 324, 184
+  xy: 358, 236
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: -1
 foreground
   rotate: false
-  xy: 2, 38
+  xy: 2, 72
   size: 320, 180
   orig: 320, 180
   offset: 0, 0
   index: -1
+order
+  rotate: false
+  xy: 2, 38
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
 trash
   rotate: false
-  xy: 358, 202
+  xy: 2, 2
   size: 32, 16
   orig: 32, 16
   offset: 0, 0

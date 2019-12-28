@@ -166,7 +166,11 @@ public class FinalizeStation extends GameStation {
 
     public void finishOrder(Order o) {
         int score = o.compare(modifiedPlanet);
+        if(modifiedPlanet.getTimeSpent() < 1000) {
+            score = -10;
+        }
         Logger.log(this, "SCORE IS", score);
+        GameScreen.score += score;
         trash(false);
     }
 

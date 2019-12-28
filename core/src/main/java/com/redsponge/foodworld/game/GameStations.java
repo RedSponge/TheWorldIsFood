@@ -34,6 +34,7 @@ public class GameStations extends ScreenEntity {
         }));
         pos.set(0, 0, 5);
         size.set(320, 180);
+        stations[0].show();
     }
 
     @Override
