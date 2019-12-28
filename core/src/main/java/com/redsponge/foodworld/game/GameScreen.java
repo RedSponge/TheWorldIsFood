@@ -34,8 +34,6 @@ public class GameScreen extends AbstractScreen {
 
     public static final Vector2 mousePos = new Vector2();
     private Stage stage;
-
-    private DelayedRemovalArray<Order> orders;
     private TextureRegion orderLine;
 
     public GameScreen(GameAccessor ga) {
@@ -72,13 +70,6 @@ public class GameScreen extends AbstractScreen {
         for (int i = 0; i < 8; i++) {
             addEntity(new Order(batch, shapeRenderer, MathUtils.random(6), MathUtils.random(5), MathUtils.randomBoolean(), MathUtils.randomBoolean(), MathUtils.randomBoolean(), i));
         }
-//        addEntity(new Order(batch, shapeRenderer, 2, 3, true, false, true, 0));
-//        addEntity(new Order(batch, shapeRenderer, 4, 1, false, true, false, 1));
-
-//        stage = new Stage(renderSystem.getViewport(), batch);
-//        inputMultiplexer.addProcessor(stage);
-
-//        addEntity(new Planet(batch, shapeRenderer));
 
         orderLine = assets.getTextureRegion("orderLine");
     }

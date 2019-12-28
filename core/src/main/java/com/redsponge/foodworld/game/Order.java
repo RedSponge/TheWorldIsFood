@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
+import com.redsponge.foodworld.game.stations.FinalizeStation;
+import com.redsponge.foodworld.game.stations.OrderStation;
 import com.redsponge.redengine.screen.components.RenderRunnableComponent;
 import com.redsponge.redengine.screen.components.TextureComponent;
 import com.redsponge.redengine.screen.entity.ScreenEntity;
@@ -29,6 +32,8 @@ public class Order extends ScreenEntity {
 
     private TextureComponent tex;
     private Color clipperColour;
+
+    private Rectangle rct;
 
     public static final Color[] CLIPPER_COLOURS = {
             Color.RED,
@@ -52,7 +57,8 @@ public class Order extends ScreenEntity {
         p.setHasWater(water);
         p.setDraggable(false);
 
-        rollColour();
+       rollColour();
+       rct = new Rectangle();
     }
 
     public void rollColour() {
@@ -67,7 +73,6 @@ public class Order extends ScreenEntity {
         actor = new Actor();
         actor.setPosition(pos.getX(), pos.getY(), Align.center);
         actor.setSize(size.getX(), size.getY());
-//        actor.setScale(0.75f);
         actor.setOrigin(Align.center);
 
         ((GameScreen)screen).getStage().addActor(actor);
@@ -92,8 +97,27 @@ public class Order extends ScreenEntity {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                actor.addAction(Actions.parallel(Actions.scaleTo(1, 1, 0.1f, Interpolation.exp5), Actions.sequence(Actions.moveTo(actor.getX() < 35 ? 35 : actor.getX() > 280 ? 280 : actor.getX(), 180 - 28, 0.2f, Interpolation.circleOut), Actions.run(() -> {
+                float targetX = actor.getX() < 35 ? 35 : actor.getX() > 280 ? 280 : actor.getX();
+                float targetY = 180 - 28;
+                boolean done = false;
+
+                if(((GameScreen) screen).getStations().getSelectedStation() instanceof FinalizeStation) {
+                    rct.set(actor.getX(), actor.getY(), actor.getWidth(), actor.getHeight());
+                    Rectangle r = ((FinalizeStation) ((GameScreen) screen).getStations().getSelectedStation()).getDoneRectangle();
+                    if(r.overlaps(rct) && ((FinalizeStation) ((GameScreen) screen).getStations().getSelectedStation()).getModifiedPlanet() != null) {
+                        targetX = r.x;
+                        targetY = r.y;
+                        done = true;
+                    }
+                }
+                final boolean finalDone = done;
+
+                actor.addAction(Actions.parallel(Actions.scaleTo(1, 1, 0.1f, Interpolation.exp5), Actions.sequence(Actions.moveTo(targetX, targetY, 0.2f, Interpolation.circleOut), Actions.run(() -> {
                     dragged = false;
+                    if(finalDone) {
+                        ((FinalizeStation)((GameScreen) screen).getStations().getSelectedStation()).finishOrder(Order.this);
+                        remove();
+                    }
                 }))));
             }
 
@@ -134,7 +158,6 @@ public class Order extends ScreenEntity {
             float x = actor.getX() - ((actor.getScaleX() - 1) * (w / 4));
             float y = actor.getY() - ((actor.getScaleY() - 1) * (h / 4));
 
-            Logger.log(this, x, y, w, h);
             batch.setColor(Color.WHITE);
             batch.draw(paper, x, y, w, h);
             if(!dragged) {
@@ -146,5 +169,28 @@ public class Order extends ScreenEntity {
             p.setScale((actor.getScaleX() - 1.0f) / 2f + 0.4f);
             p.render(batch);
         }));
+    }
+
+    public int compare(Planet modifiedPlanet) {
+        byte score = 13;
+        byte humanDiff = (byte) Math.abs(modifiedPlanet.getHumanLevel() - p.getHumanLevel()); // 0-5
+        byte plantDiff = (byte) Math.abs(modifiedPlanet.getSeedsLevel() - p.getSeedsLevel()); // 0-5
+        byte waterDiff = (byte) (modifiedPlanet.hasWater() ^ p.hasWater() ? 1 : 0); // 0-1
+        byte frozenDiff = (byte) (modifiedPlanet.isFrozen() ^ p.isFrozen() ? 1 : 0); // 0-1
+        byte volcanoDiff = (byte) (modifiedPlanet.isVolcanic() ^ p.isVolcanic() ? 1 : 0); // 0-1
+
+        byte totalDiff = (byte) (humanDiff + plantDiff + waterDiff + frozenDiff + volcanoDiff);
+        Logger.log(this, "ORDER PLANET:", p);
+        Logger.log(this, "COMPARED:", modifiedPlanet);
+        Logger.log(this, humanDiff, plantDiff, waterDiff, frozenDiff, volcanoDiff);
+        Logger.log(this, totalDiff);
+        score -= totalDiff;
+
+        return (int) ((score / 13f) * 100);
+    }
+
+    @Override
+    public void removed() {
+        actor.remove();
     }
 }

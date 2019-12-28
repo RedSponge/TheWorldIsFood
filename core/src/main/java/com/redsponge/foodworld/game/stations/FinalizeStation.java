@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.redsponge.foodworld.game.GameScreen;
+import com.redsponge.foodworld.game.Order;
 import com.redsponge.foodworld.game.Planet;
 import com.redsponge.foodworld.game.ScreenButtonRunnable;
 import com.redsponge.redengine.assets.AssetSpecifier;
@@ -40,14 +42,13 @@ public class FinalizeStation extends GameStation {
         this::trash
     };
 
-
-
     private static final int BUTTON_FETCH = 0;
     private static final int BUTTON_ICE = 1;
     private static final int BUTTON_VOLCANIC = 2;
     private static final int BUTTON_TRASH = 3;
 
     private ScreenButtonRunnable[] buttons;
+    private Rectangle doneRectangle;
 
     public FinalizeStation(GameScreen screen, ShapeRenderer shapeRenderer, SpriteBatch batch, FitViewport viewport) {
         super(screen, shapeRenderer, batch, viewport);
@@ -60,6 +61,7 @@ public class FinalizeStation extends GameStation {
         planets = new DelayedRemovalArray<>();
 
         font = Fonts.getFont("pixelmix", 8);
+        doneRectangle = new Rectangle(280, 180-140, 32, 42);
     }
 
     public void updateButtons() {
@@ -103,6 +105,11 @@ public class FinalizeStation extends GameStation {
         }
         font.draw(batch, "Pending\n" + planets.size, 20, 180 - 80, 9, Align.center, false);
         batch.end();
+
+        shapeRenderer.begin(ShapeType.Line);
+        shapeRenderer.setColor(Color.YELLOW);
+        shapeRenderer.rect(doneRectangle.x, doneRectangle.y, doneRectangle.width, doneRectangle.height);
+        shapeRenderer.end();
     }
 
     @Override
@@ -146,5 +153,19 @@ public class FinalizeStation extends GameStation {
     public void addPlanet(Planet p) {
         Logger.log(this, "GOT NEW PLANET", p);
         planets.add(p);
+    }
+
+    public Rectangle getDoneRectangle() {
+        return doneRectangle;
+    }
+
+    public void finishOrder(Order o) {
+        int score = o.compare(modifiedPlanet);
+        Logger.log(this, "SCORE IS", score);
+        trash();
+    }
+
+    public Planet getModifiedPlanet() {
+        return modifiedPlanet;
     }
 }

@@ -232,4 +232,15 @@ public class Planet {
         this.volcanic = volcanic;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "Planet{" +
+                "frozen=" + frozen +
+                ", seedsLevel=" + seedsLevel +
+                ", humanLevel=" + humanLevel +
+                ", hasWater=" + hasWater +
+                ", volcanic=" + volcanic +
+                '}';
+    }
 }
