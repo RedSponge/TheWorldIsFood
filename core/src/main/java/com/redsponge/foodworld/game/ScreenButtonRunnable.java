@@ -53,7 +53,6 @@ public class ScreenButtonRunnable extends ScreenEntity {
 
     @Override
     public void additionalTick(float delta) {
-        Logger.log(this, "YAY");
         if(!active) {
             render.setColor(Color.GRAY);
             render.setScaleX(1.0f).setScaleY(1.0f);
