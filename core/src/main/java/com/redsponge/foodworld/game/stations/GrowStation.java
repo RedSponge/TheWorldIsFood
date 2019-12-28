@@ -37,7 +37,7 @@ public class GrowStation extends GameStation {
         super(screen, shapeRenderer, batch, viewport);
         growers = new Grower[GROWER_POSITIONS.length / 2];
         for (int i = 0; i < GROWER_POSITIONS.length / 2; i++) {
-            growers[i] = new Grower(GROWER_POSITIONS[i * 2] + 34 , 180 - GROWER_POSITIONS[i * 2 + 1]);
+            growers[i] = new Grower(GROWER_POSITIONS[i * 2] + 34 , 180 - GROWER_POSITIONS[i * 2 + 1], screen);
         }
 
         basePlanets = new DelayedRemovalArray<>();

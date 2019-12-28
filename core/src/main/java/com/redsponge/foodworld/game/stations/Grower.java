@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Circle;
+import com.redsponge.foodworld.game.Explosion;
+import com.redsponge.foodworld.game.GameScreen;
 import com.redsponge.foodworld.game.Planet;
 import com.redsponge.redengine.assets.AssetSpecifier;
+import com.redsponge.redengine.screen.components.Mappers;
 import com.redsponge.redengine.utils.Logger;
 
 public class Grower  {
@@ -20,7 +23,10 @@ public class Grower  {
     private float time;
     private Planet content;
 
-    public Grower(int x, int y) {
+    private GameScreen screen;
+
+    public Grower(int x, int y, GameScreen screen) {
+        this.screen = screen;
         detectorCircle = new Circle(x, y, 24);
         time = (float) Math.random();
     }
@@ -75,11 +81,16 @@ public class Grower  {
                 Color.RED,
                 new Color(0.3f, 0, 0, 1.0f),
         };
-        Color c = barColors[timeSpent / 1000];
-        float percent = timeSpent / 6000f;
-        sr.setColor(c);
-        sr.rect(detectorCircle.x - 30, detectorCircle.y + 20, 60 * percent, 5);
-
+        try {
+            Color c = barColors[timeSpent / 1000];
+            float percent = timeSpent / 6000f;
+            sr.setColor(c);
+            sr.rect(detectorCircle.x - 30, detectorCircle.y + 20, 60 * percent, 5);
+        } catch (IndexOutOfBoundsException e) {
+            Logger.log(this, "out of bounds! exploding!");
+            content.explode();
+            content = null;
+        }
     }
 
     public boolean canContain(Planet p) {

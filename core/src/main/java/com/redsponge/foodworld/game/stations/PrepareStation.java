@@ -57,12 +57,16 @@ public class PrepareStation extends GameStation {
 
     private void okPlanet() {
         ((GrowStation) screen.getStations().getStations()[2]).addPlanet(planet);
-        trash();
+        trash(false);
 
         updateButtons();
     }
 
     private void trash() {
+        trash(true);
+    }
+    private void trash(boolean explode) {
+        if(explode) planet.explode();
         planet.getActor().remove();
         planet = null;
         updateButtons();
@@ -152,7 +156,7 @@ public class PrepareStation extends GameStation {
     }
 
     private void newPlanet() {
-        planet = new Planet();
+        planet = new Planet(batch, shapeRenderer);
         planet.loadAssets(assets);
         planet.addToStage(stage);
 

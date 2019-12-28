@@ -3,6 +3,7 @@ package com.redsponge.foodworld.game;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -22,6 +23,7 @@ public class GameScreen extends AbstractScreen {
     public static final float RATIO = 9/16f;
     public static final int WIDTH = 320;
     public static final int HEIGHT = (int) (WIDTH * RATIO);
+    public static GameScreen instance;
 
     private FitViewport guiViewport;
     private RenderSystem renderSystem;
@@ -36,6 +38,8 @@ public class GameScreen extends AbstractScreen {
     private Stage stage;
     private TextureRegion orderLine;
 
+    private Music bgMusic;
+
     public GameScreen(GameAccessor ga) {
         super(ga);
     }
@@ -48,6 +52,7 @@ public class GameScreen extends AbstractScreen {
             Field f = AbstractScreen.class.getDeclaredField("engine");
             f.setAccessible(true);
             _engine = (Engine) f.get(this);
+            instance = this;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -72,6 +77,11 @@ public class GameScreen extends AbstractScreen {
         }
 
         orderLine = assets.getTextureRegion("orderLine");
+
+        bgMusic = assets.get("backgroundMusic", Music.class);
+        bgMusic.setLooping(true);
+        bgMusic.setVolume(0.1f);
+        bgMusic.play();
     }
 
 

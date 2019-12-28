@@ -1,6 +1,7 @@
 package com.redsponge.foodworld.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,6 +20,7 @@ public class ScreenButton extends ScreenEntity {
     private int index;
     private int screenWidth, screenHeight;
     private Rectangle buttonHitbox;
+    private Sound click;
 
     public ScreenButton(SpriteBatch batch, ShapeRenderer shapeRenderer, int index, int screenWidth, int screenHeight) {
         super(batch, shapeRenderer);
@@ -38,6 +40,7 @@ public class ScreenButton extends ScreenEntity {
 
         buttonHitbox = new Rectangle(pos.getX() - size.getX() / 2f, pos.getY() - size.getY() / 2f, size.getX(), size.getY());
         render.setCentering(RenderCentering.CENTER);
+        click = assets.get("clickSound", Sound.class);
     }
 
     private boolean selected = true;
@@ -52,8 +55,8 @@ public class ScreenButton extends ScreenEntity {
             }
             selected = true;
             if(MouseInput.isKeyPressed(MouseInput.RIGHT)) {
-                Logger.log(this, "NYEH", index);
                 ((GameScreen)screen).setStation(index);
+                click.play();
             }
         } else {
             size.set(texture.getTexture().getRegionWidth(), texture.getTexture().getRegionHeight());

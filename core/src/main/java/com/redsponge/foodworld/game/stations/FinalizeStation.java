@@ -145,6 +145,11 @@ public class FinalizeStation extends GameStation {
     }
 
     private void trash() {
+        trash(true);
+    }
+
+    private void trash(boolean explode) {
+        if(explode) modifiedPlanet.explode();
         modifiedPlanet = null;
         updateButtons();
     }
@@ -162,7 +167,7 @@ public class FinalizeStation extends GameStation {
     public void finishOrder(Order o) {
         int score = o.compare(modifiedPlanet);
         Logger.log(this, "SCORE IS", score);
-        trash();
+        trash(false);
     }
 
     public Planet getModifiedPlanet() {

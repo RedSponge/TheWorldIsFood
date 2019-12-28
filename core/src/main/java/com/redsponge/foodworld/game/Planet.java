@@ -1,9 +1,11 @@
 package com.redsponge.foodworld.game;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.redsponge.foodworld.Utils;
 import com.redsponge.redengine.assets.AssetSpecifier;
-import com.redsponge.redengine.utils.Logger;
 
 import java.util.function.Consumer;
 
@@ -43,16 +44,31 @@ public class Planet {
 
     private float scale;
 
-    public Planet() {
+    private Sound pick, pop;
+
+    private SpriteBatch batch;
+    private ShapeRenderer sr;
+    private Sound boom;
+
+    public Planet(SpriteBatch batch, ShapeRenderer sr) {
+        this.batch = batch;
+        this.sr = sr;
         c = new Circle();
         scale = 1;
     }
 
 
     public void loadAssets(AssetSpecifier assets) {
+        boom = assets.get("boomSound", Sound.class);
         actor = new Image(assets.getTextureRegion("planetBase"));
 
         actor.addListener(new DragListener() {
+            @Override
+            public void dragStart(InputEvent event, float x, float y, int pointer) {
+                super.dragStart(event, x, y, pointer);
+                pick.play();
+            }
+
             public void drag(InputEvent event, float x, float y, int pointer) {
                 if (draggable) {
                     actor.moveBy(x - actor.getWidth() / 2, y - actor.getHeight() / 2);
@@ -65,6 +81,7 @@ public class Planet {
                 if(draggable && onDragRelease != null) {
                     onDragRelease.accept(Planet.this);
                 }
+                pop.play();
                 dragged = false;
             }
         });
@@ -75,6 +92,9 @@ public class Planet {
         seedsTex = assets.getAnimation("planetSeeds");
         humanTex = assets.getAnimation("planetHuman");
         volcanicTex = assets.getTextureRegion("planetVolcano");
+
+        pick = assets.get("clickSound", Sound.class);
+        pop = assets.get("popSound", Sound.class);
     }
 
     public float getScale() {
@@ -242,5 +262,10 @@ public class Planet {
                 ", hasWater=" + hasWater +
                 ", volcanic=" + volcanic +
                 '}';
+    }
+
+    public void explode() {
+        boom.play();
+        GameScreen.instance.addEntity(new Explosion(batch, sr, actor.getX(), actor.getY()));
     }
 }

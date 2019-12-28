@@ -1,5 +1,6 @@
 package com.redsponge.foodworld.game;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
 import com.redsponge.foodworld.game.stations.FinalizeStation;
-import com.redsponge.foodworld.game.stations.OrderStation;
 import com.redsponge.redengine.screen.components.RenderRunnableComponent;
 import com.redsponge.redengine.screen.components.TextureComponent;
 import com.redsponge.redengine.screen.entity.ScreenEntity;
@@ -35,6 +35,8 @@ public class Order extends ScreenEntity {
 
     private Rectangle rct;
 
+    private Sound pick, pop;
+
     public static final Color[] CLIPPER_COLOURS = {
             Color.RED,
             Color.BLUE,
@@ -49,7 +51,7 @@ public class Order extends ScreenEntity {
     public Order(SpriteBatch batch, ShapeRenderer sr, int human, int plants, boolean frozen, boolean volcanic, boolean water, int index) {
         super(batch, sr);
         this.index = index;
-        p = new Planet();
+        p = new Planet(batch, sr);
         p.setHumanLevel(human);
         p.setSeedsLevel(plants);
         p.setFrozen(frozen);
@@ -84,6 +86,7 @@ public class Order extends ScreenEntity {
                     actor.addAction(Actions.scaleTo(2f, 2f, 0.1f, Interpolation.exp5));
                 }
                 dragged = true;
+                pick.play();
 
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -118,6 +121,7 @@ public class Order extends ScreenEntity {
                         ((FinalizeStation)((GameScreen) screen).getStations().getSelectedStation()).finishOrder(Order.this);
                         remove();
                     }
+                    pop.play();
                 }))));
             }
 
@@ -169,6 +173,9 @@ public class Order extends ScreenEntity {
             p.setScale((actor.getScaleX() - 1.0f) / 2f + 0.4f);
             p.render(batch);
         }));
+
+        pick = assets.get("clickSound", Sound.class);
+        pop = assets.get("popSound", Sound.class);
     }
 
     public int compare(Planet modifiedPlanet) {

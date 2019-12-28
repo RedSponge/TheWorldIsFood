@@ -1,6 +1,9 @@
 package com.redsponge.foodworld.game;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -132,4 +135,25 @@ public class GameAssets extends AssetSpecifier {
 
     @AtlasFrame(frameName = "order_line", atlas = "generalAtlas")
     private TextureRegion orderLine;
+
+    // MUSIC
+    @Asset("music/making_planets.ogg")
+    private Music backgroundMusic;
+
+    // SOUNDS
+    @Asset("sounds/click.ogg")
+    private Sound clickSound;
+
+    @Asset("sounds/pick.ogg")
+    private Sound pickSound;
+
+    @Asset("sounds/pop.ogg")
+    private Sound popSound;
+
+    @Asset("sounds/boom.wav")
+    private Sound boomSound;
+
+    // EXPLOSION
+    @Asset("textures/explosion.png")
+    private Texture explosion;
 }
